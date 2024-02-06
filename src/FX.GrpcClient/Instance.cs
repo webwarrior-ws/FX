@@ -19,9 +19,11 @@ namespace GrpcClient
         private static string serverFqdn =
             "localhost";
 
+        public static readonly int Port = 7178;
+
         public FXGrpcService.FXGrpcServiceClient Connect()
         {
-            var channel = GrpcChannel.ForAddress($"http://{serverFqdn}:8080");
+            var channel = GrpcChannel.ForAddress($"https://{serverFqdn}:{Port}");
             var client = new FXGrpcService.FXGrpcServiceClient(channel);
             return client;
         }
@@ -43,13 +45,14 @@ namespace GrpcClient
             }
         }
 
-        public async Task SendHello()
+        public async Task<string> SendMessage(string message)
         {
             var client = Connect();
             var reply = await client.GenericMethodAsync(
-                new GenericInputParam { MsgIn = "hello" }
+                new GenericInputParam { MsgIn = message }
             );
             Console.WriteLine($"Got response: {reply.MsgOut}");
+            return reply.MsgOut;
         }
     }
 }

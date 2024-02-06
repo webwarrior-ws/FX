@@ -30,14 +30,14 @@ namespace GrpcService.Services
         {
             Console.WriteLine($"Received {request.MsgIn}");
 
-            return new GenericOutputParam { MsgOut = "ack" };
+            return new GenericOutputParam { MsgOut = "received " + request.MsgIn };
         }
 
         public override async Task GenericStreamOutputMethod(GenericInputParam request, IServerStreamWriter<GenericOutputParam> responseStream, ServerCallContext context)
         {
             Console.WriteLine(request.MsgIn);
 
-            await responseStream.WriteAsync(new GenericOutputParam { MsgOut = "ack" });
+            await responseStream.WriteAsync(new GenericOutputParam { MsgOut = "received " + request.MsgIn });
         }
     }
 }
