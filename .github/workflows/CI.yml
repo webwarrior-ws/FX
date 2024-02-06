@@ -31,6 +31,11 @@ jobs:
           apt install --yes --no-install-recommends ca-certificates
 
           apt install --yes --no-install-recommends dotnet8
+          
+          # trust ASP.NET Core HTTPS development certificate
+          dotnet dev-certs https
+          sudo -E dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
+          sudo update-ca-certificates
 
       - name: Restore nuget dependencies
         run: dotnet restore
