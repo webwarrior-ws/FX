@@ -2,10 +2,10 @@ syntax = "proto3";
 
 option csharp_namespace = "GrpcService";
 
-package runIntoMe;
+package fx;
 
 // The greeting service definition.
-service RunIntoMeGrpcService {
+service FXGrpcService {
   // Sends a greeting
   rpc GenericMethod (GenericInputParam) returns (GenericOutputParam);
 

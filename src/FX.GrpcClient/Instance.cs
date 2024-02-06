@@ -1,10 +1,9 @@
 ﻿
 using System;
 using System.Threading.Tasks;
-
+using Grpc.Core;
 using Grpc.Net.Client;
 using GrpcService;
-using DataModel;
 
 namespace GrpcClient
 {
@@ -18,17 +17,12 @@ namespace GrpcClient
     public class Instance
     {
         private static string serverFqdn =
-#if DEBUG
-            "localhost"
-#else
-            "grpcserver.runinto.me"
-#endif
-            ;
+            "localhost";
 
-        public RunIntoMeGrpcService.RunIntoMeGrpcServiceClient Connect()
+        public FXGrpcService.FXGrpcServiceClient Connect()
         {
             var channel = GrpcChannel.ForAddress($"http://{serverFqdn}:8080");
-            var client = new RunIntoMeGrpcService.RunIntoMeGrpcServiceClient(channel);
+            var client = new FXGrpcService.FXGrpcServiceClient(channel);
             return client;
         }
 
@@ -49,59 +43,13 @@ namespace GrpcClient
             }
         }
 
-        public async Task<int> RegisterNewAppInstall()
+        public async Task SendHello()
         {
             var client = Connect();
             var reply = await client.GenericMethodAsync(
-                new GenericInputParam { MsgIn = Marshaller.Serialize(new RegisterNewAppInstallRequest()) }
+                new GenericInputParam { MsgIn = "hello" }
             );
-            int newUserId;
-            if (!int.TryParse(reply.MsgOut, out newUserId) || newUserId < 1)
-            {
-                throw new InvalidOperationException("Unexpected newUserId type or value: " + reply.MsgOut);
-            }
-            return newUserId;
-        }
-
-        public async Task UpdateGpsLocation(UpdateGpsLocationRequest gpsLocationUpdateDetails)
-        {
-            var client = Connect();
-            await client.GenericMethodAsync(
-                new GenericInputParam { MsgIn = Marshaller.Serialize(gpsLocationUpdateDetails) }
-            );
-        }
-
-        public async Task<AddFolkResponse> AddFolk(AddFolkRequest addFolkRequest)
-        {
-            var client = Connect();
-            var addFolkResponseMsg =
-                await client.GenericMethodAsync(
-                    new GenericInputParam { MsgIn = Marshaller.Serialize(addFolkRequest) }
-                );
-
-            var addFolkResponse =
-                Marshaller.Deserialize<AddFolkResponse>(addFolkResponseMsg.MsgOut);
-
-            return addFolkResponse;
-        }
-
-        public async Task<GetFolksResponse> GetFolks(GetFolksRequest getFolksRequest)
-        {
-            var client = Connect();
-            var getFolksResponseMsg =
-                await client.GenericMethodAsync(
-                    new GenericInputParam { MsgIn = Marshaller.Serialize(getFolksRequest) }
-                );
-
-            var getFolksResponse = Marshaller.Deserialize<GetFolksResponse>(getFolksResponseMsg.MsgOut);
-            return getFolksResponse;
-        }
-        public async Task UpdateCloseness(UpdateClosenessRequest updateClosenessRequest)
-        {
-            var client = Connect();
-            await client.GenericMethodAsync(
-                new GenericInputParam { MsgIn = Marshaller.Serialize(updateClosenessRequest) }
-            );
+            Console.WriteLine($"Got response: {reply.MsgOut}");
         }
     }
 }
