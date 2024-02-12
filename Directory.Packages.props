@@ -3,6 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="FSharp.SystemTextJson" Version="1.2.42" />
     <PackageVersion Include="StackExchange.Redis" Version="2.0.513" />
     <PackageVersion Include="NUnit" Version="3.9.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="3.9.0" />

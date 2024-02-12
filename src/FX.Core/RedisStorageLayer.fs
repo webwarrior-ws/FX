@@ -6,11 +6,12 @@ open System
 open FsharpExchangeDotNetStandard
 
 open System.Text.Json
+open System.Text.Json.Serialization
 open StackExchange.Redis
 
 [<AutoOpen>]
 module Serialization =
-    let serializationOptions = JsonSerializerOptions.Default
+    let serializationOptions = JsonFSharpOptions.Default().ToJsonSerializerOptions()
 
 type OrderQuery =
     {
