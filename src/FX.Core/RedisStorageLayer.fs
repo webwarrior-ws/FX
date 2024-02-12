@@ -11,7 +11,27 @@ open StackExchange.Redis
 
 [<AutoOpen>]
 module Serialization =
-    let serializationOptions = JsonFSharpOptions.Default().ToJsonSerializerOptions()
+    type DecimalTypeConverter() =
+        inherit JsonConverter<decimal>()
+
+        override this.Read(reader, _typeToConvert, _options) =
+            reader.GetDecimal()
+
+        override this.Write(writer, value, _options ) =
+            // Values such as 0m and 0.0m are equal, but have different string representations,
+            // which may cause problems when comparing serialized values.
+            // To avoid this, add 0.0m to value before writing, so all decimals will be serilized with fractional
+            // part, even if it's 0.
+            // For more info, see https://colinmackay.scot/2021/07/03/why-is-there-a-difference-between-decimal-0-and-0-0/
+            writer.WriteNumberValue (value + 0.0m)
+
+    let serializationOptions = 
+        let options = 
+            JsonFSharpOptions
+                .Default()
+                .ToJsonSerializerOptions()
+        options.Converters.Add(DecimalTypeConverter())
+        options
 
 type OrderQuery =
     {
