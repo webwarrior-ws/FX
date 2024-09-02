@@ -53,7 +53,7 @@ module Serialization =
                 if reader.TokenType <> JsonTokenType.EndObject then
                     raise <| JsonException()
                 Match.Full
-            | "Parital" -> 
+            | "Partial" -> 
                 // "Amount" key
                 reader.Read() |> ignore
                 if reader.TokenType <> JsonTokenType.PropertyName || reader.GetString() <> "Amount" then
