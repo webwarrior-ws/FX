@@ -30,8 +30,8 @@ namespace GrpcService.Services
                 var marketForLimitOrder = new Market(Currency.BTC, Currency.USD);
 
                 // TODO: make async
-                var matchType = exchange.SendLimitOrder(limitOrderReq, marketForLimitOrder);
-                return await Task.FromResult(new GenericOutputParam { MsgOut = GrpcModels.Marshaller.Serialize(matchType) });
+                var match = exchange.SendLimitOrder(limitOrderReq, marketForLimitOrder);
+                return await Task.FromResult(new GenericOutputParam { MsgOut = GrpcModels.Marshaller.Serialize(match) });
             }
             else if (deserializedRequest is GrpcModels.MarketOrder { } marketOrder)
             {
@@ -39,9 +39,9 @@ namespace GrpcService.Services
                 var marketForMarketOrder = new Market(Currency.BTC, Currency.USD);
 
                 // TODO: make async
-                exchange.SendMarketOrder(orderInfo, marketForMarketOrder);
+                var match = exchange.SendMarketOrder(orderInfo, marketForMarketOrder);
                 // return empty string?
-                return await Task.FromResult(new GenericOutputParam { MsgOut = String.Empty });
+                return await Task.FromResult(new GenericOutputParam { MsgOut = GrpcModels.Marshaller.Serialize(match) });
             }
             else if (deserializedRequest is GrpcModels.CancelOrderRequest { } cancelOrderRequest)
             {
