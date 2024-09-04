@@ -50,7 +50,9 @@ jobs:
           redis-server --daemonize yes
 
       - name: Run tests
-        run: dotnet test --filter "Name=GrpcE2ETest"
+        run: |
+          dotnet test --filter BasicTests
+          dotnet test --filter GrpcE2ETest
         
   buildAndTest-windows:
     name: Build (Windows)
