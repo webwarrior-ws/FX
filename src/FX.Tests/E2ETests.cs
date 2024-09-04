@@ -58,7 +58,7 @@ namespace FsharpExchange.Tests
             var client2 = new GrpcClient.Instance();
             client2.Connect();
 
-            var order2 = new GrpcModels.LimitOrder(1.0m, Side.Bid.ToString(), 2.0m);
+            var order2 = new GrpcModels.LimitOrder(1.0m, Side.Bid.ToString(), 0.5m);
             var marketOrderResponse = await client2.SendMessage<GrpcModels.LimitOrder, FSharpOption<Match>>(order2);
 
             Assert.That(marketOrderResponse.Value.IsPartial);
