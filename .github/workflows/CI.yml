@@ -50,12 +50,7 @@ jobs:
           redis-server --daemonize yes
 
       - name: Run tests
-        run: |
-          dotnet test --filter BasicTests
-          dotnet test --filter MarketOrders
-          dotnet test --filter MakerOnlyOrders
-          dotnet test --filter LimitOrders
-          dotnet test --filter GrpcE2ETest
+        run: dotnet test
         
   buildAndTest-windows:
     name: Build (Windows)
