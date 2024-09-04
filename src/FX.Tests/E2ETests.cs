@@ -48,7 +48,6 @@ namespace FsharpExchange.Tests
             await Task.Delay(TimeSpan.FromSeconds(1.0));
 
             var client = new GrpcClient.Instance();
-            client.Connect();
             
             var order = new GrpcModels.LimitOrder(1.0m, Side.Ask.ToString(), 1.0m);
             var response = await client.SendMessage<GrpcModels.LimitOrder, FSharpOption<Match>>(order);
@@ -56,9 +55,8 @@ namespace FsharpExchange.Tests
             Assert.That(response.Value.IsFull);
 
             var client2 = new GrpcClient.Instance();
-            client2.Connect();
 
-            var order2 = new GrpcModels.LimitOrder(1.0m, Side.Bid.ToString(), 0.5m);
+            var order2 = new GrpcModels.LimitOrder(1.0m, Side.Bid.ToString(), 1.0m);
             var marketOrderResponse = await client2.SendMessage<GrpcModels.LimitOrder, FSharpOption<Match>>(order2);
 
             Assert.That(marketOrderResponse.Value.IsPartial);
