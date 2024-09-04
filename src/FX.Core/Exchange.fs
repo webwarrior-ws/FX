@@ -15,9 +15,13 @@ type public Exchange(persistenceType: Persistence) =
             marketStore.GetOrderBook market
 
     member __.SendMarketOrder (order: OrderInfo, market: Market): Option<Match> =
+        printfn $"SendMarketOrder called with {order}, {market}"
         marketStore.ReceiveOrder (OrderRequest.Market(order)) market
 
     member __.SendLimitOrder (order: LimitOrderRequest, market: Market): Option<Match> =
+        printfn $"SendLimitOrder called with {order}, {market}"
+        printfn $"bid: {marketStore.GetOrderBook(market).[Side.Bid].Analyze()}"
+        printfn $"ask: {marketStore.GetOrderBook(market).[Side.Ask].Analyze()}"
         marketStore.ReceiveOrder (OrderRequest.Limit(order)) market
 
     // TODO: should receive market as a parameter as well, to improve performance (no need to loop through all

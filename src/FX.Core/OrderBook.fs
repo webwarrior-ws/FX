@@ -10,6 +10,9 @@ type MatchLeftOver =
 
 type OrderBook(bidSide: IOrderBookSideFragment, askSide: IOrderBookSideFragment,
                emptySide: Side -> IOrderBookSideFragment) =
+    do
+        printfn $"OrderBook.InsertOrder called with bidSide={bidSide}, askSide={askSide}"
+        printfn "%s" <| System.Diagnostics.StackTrace().ToString()
 
     let CanPrependOrderBeforeOrder (incomingOrder: LimitOrder) (existingOrder: LimitOrder): bool =
         match incomingOrder.OrderInfo.Side with
