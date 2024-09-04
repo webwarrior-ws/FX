@@ -52,6 +52,9 @@ jobs:
       - name: Run tests
         run: |
           dotnet test --filter BasicTests
+          dotnet test --filter MarketOrders
+          dotnet test --filter MakerOnlyOrders
+          dotnet test --filter LimitOrders
           dotnet test --filter GrpcE2ETest
         
   buildAndTest-windows:
