@@ -52,11 +52,11 @@ namespace FsharpExchange.Tests
             var order = new GrpcModels.LimitOrder(1.0m, Side.Ask.ToString(), 1.0m);
             var response = await client.SendMessage<GrpcModels.LimitOrder, FSharpOption<Match>>(order);
 
-            Assert.That(response.Value.IsFull);
+            Assert.That(response, Is.Null);
 
             var client2 = new GrpcClient.Instance();
 
-            var order2 = new GrpcModels.LimitOrder(1.0m, Side.Bid.ToString(), 1.0m);
+            var order2 = new GrpcModels.LimitOrder(1.0m, Side.Bid.ToString(), 2.0m);
             var marketOrderResponse = await client2.SendMessage<GrpcModels.LimitOrder, FSharpOption<Match>>(order2);
 
             Assert.That(marketOrderResponse.Value.IsPartial);
